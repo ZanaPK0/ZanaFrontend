@@ -9,10 +9,10 @@ headingHeader.setAttribute("class", "headingheader");
 headingHeader.innerText = "welcome!";
 headerContainer.appendChild(headingHeader);
 
-let homeButton = document.createElement("button");
-homeButton.setAttribute("class", "homeButton");
-homeButton.innerText = "Home";
-headerContainer.appendChild(homeButton);
+let batmanButton = document.createElement("button");
+batmanButton.setAttribute("class", "batmanButton");
+batmanButton.innerText = "Batman";
+headerContainer.appendChild(batmanButton);
 
 let theflashButton = document.createElement("button");
 theflashButton.setAttribute("class", "theflashButton");
@@ -40,6 +40,14 @@ spidermanButton.innerText = "Spiderman";
 headerContainer.appendChild(spidermanButton);
 
 // Main creation ----------------------------------------------------
+
+let movieContainer = document.createElement("main");
+movieContainer.setAttribute("class", "movieContainer");
+document.body.appendChild(movieContainer);
+
+let movieSection = document.createElement("section");
+movieSection.setAttribute("class", "movieSection");
+movieContainer.appendChild(movieSection);
 
 // Fetch API --------------------------------------------------------
 const fetchApiResults = async (type = "batmanPageOne") => {
@@ -91,4 +99,30 @@ const fetchApiResults = async (type = "batmanPageOne") => {
 
 window.addEventListener("DOMContentLoaded", async function () {
   await fetchApiResults("batmanPageOne");
+});
+
+// Categories -------------------------------------------------------
+
+batmanButton.addEventListener("click", async function () {
+  await fetchApiResults("batmanPageOne");
+});
+
+theflashButton.addEventListener("click", async function () {
+  await fetchApiResults("theflashPageOne");
+});
+
+thepunisherButton.addEventListener("click", async function () {
+  await fetchApiResults("thepunisherPageOne");
+});
+
+supermanButton.addEventListener("click", async function () {
+  await fetchApiResults("supermanPageOne");
+});
+
+avengersButton.addEventListener("click", async function () {
+  await fetchApiResults("avengersPageOne");
+});
+
+spidermanButton.addEventListener("click", async function () {
+  await fetchApiResults("spidermanPageOne");
 });
