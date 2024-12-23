@@ -83,8 +83,8 @@ const fetchApiResults = async (type = "batmanPageOne") => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    recievedDataArticles = data.Search;
-    console.log(recievedDataArticles);
+    moviesArray = data.Search;
+    console.log(moviesArray);
   } catch (error) {
     console.error(`Error fetching data for type "${type}:`, error.message);
     throw error;
@@ -126,3 +126,20 @@ avengersButton.addEventListener("click", async function () {
 spidermanButton.addEventListener("click", async function () {
   await fetchApiResults("spidermanPageOne");
 });
+
+// Tryouts
+
+// Display Movies ---------------------------------------------------
+function displayMovies(movie) {
+  let articleContainer = document.createElement("article");
+  articleContainer.setAttribute("class", "articleContainer");
+  movieSection.appendChild(articleContainer);
+
+  let articleTitle = document.createElement("h3");
+  articleTitle.textContent = moviesArray.Search;
+  articleTitle.setAttribute("class", "articleTitle");
+  articleContainer.appendChild(articleTitle);
+  moviesArray.forEach((movie) => displayMovies(movie));
+}
+
+displayMovies();
