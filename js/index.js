@@ -1,3 +1,47 @@
+//Header creation ---------------------------------------------------
+
+let headerContainer = document.createElement("header");
+headerContainer.setAttribute("class", "headerContainer");
+document.body.appendChild(headerContainer);
+
+let headingHeader = document.createElement("h1");
+headingHeader.setAttribute("class", "headingheader");
+headingHeader.innerText = "welcome!";
+headerContainer.appendChild(headingHeader);
+
+let homeButton = document.createElement("button");
+homeButton.setAttribute("class", "homeButton");
+homeButton.innerText = "Home";
+headerContainer.appendChild(homeButton);
+
+let theflashButton = document.createElement("button");
+theflashButton.setAttribute("class", "theflashButton");
+theflashButton.innerText = "The Flash";
+headerContainer.appendChild(theflashButton);
+
+let thepunisherButton = document.createElement("button");
+thepunisherButton.setAttribute("class", "thepunisherButton");
+thepunisherButton.innerText = "The Punisher";
+headerContainer.appendChild(thepunisherButton);
+
+let supermanButton = document.createElement("button");
+supermanButton.setAttribute("class", "supermanButton");
+supermanButton.innerText = "Superman";
+headerContainer.appendChild(supermanButton);
+
+let avengersButton = document.createElement("button");
+avengersButton.setAttribute("class", "avengersButton");
+avengersButton.innerText = "Avengers";
+headerContainer.appendChild(avengersButton);
+
+let spidermanButton = document.createElement("button");
+spidermanButton.setAttribute("class", "spidermanButton");
+spidermanButton.innerText = "Spiderman";
+headerContainer.appendChild(spidermanButton);
+
+// Main creation ----------------------------------------------------
+
+// Fetch API --------------------------------------------------------
 const fetchApiResults = async (type = "batmanPageOne") => {
   try {
     console.log(type, "is responsive");
