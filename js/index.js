@@ -1,3 +1,7 @@
+// Global Variables
+
+let moviesArray = [];
+
 //Header creation ---------------------------------------------------
 
 let headerContainer = document.createElement("header");
@@ -52,7 +56,8 @@ movieContainer.appendChild(movieSection);
 // Fetch API --------------------------------------------------------
 const fetchApiResults = async (type = "batmanPageOne") => {
   try {
-    console.log(type, "is responsive");
+    // console.log(type, "is responsive");
+    movieSection.replaceChildren();
     let url;
     switch (type) {
       case "batmanPageOne":
@@ -83,19 +88,25 @@ const fetchApiResults = async (type = "batmanPageOne") => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    moviesArray = data.Search;
-    console.log(moviesArray);
+    // console.log(data);
+
+    // console.log(Array.isArray(data.Search));
+
+    if (Array.isArray(data.Search)) {
+      data.Search.forEach((item, index) => {
+        if (item.Title) {
+          // console.log(`Item ${index}: ${item.Title}`);
+        }
+      });
+    }
+    let moviesArray = data.Search;
+    moviesArray.forEach(displayMovies);
+    // console.log(moviesArray);
   } catch (error) {
     console.error(`Error fetching data for type "${type}:`, error.message);
     throw error;
   }
 };
-
-// fetchApiResults((type = "theflashPageOne"));
-// fetchApiResults((type = "thepunisherPageOne"));
-// fetchApiResults((type = "supermanPageOne"));
-// fetchApiResults((type = "avengersPageOne"));
-// fetchApiResults((type = "spidermanPageOne"));
 
 window.addEventListener("DOMContentLoaded", async function () {
   await fetchApiResults("batmanPageOne");
@@ -128,18 +139,20 @@ spidermanButton.addEventListener("click", async function () {
 });
 
 // Tryouts
-
+// console.log(moviesArray);
 // Display Movies ---------------------------------------------------
 function displayMovies(movie) {
   let articleContainer = document.createElement("article");
+  // console.log(movie);
+
   articleContainer.setAttribute("class", "articleContainer");
   movieSection.appendChild(articleContainer);
 
   let articleTitle = document.createElement("h3");
-  articleTitle.textContent = moviesArray.Search;
+  articleTitle.textContent = movie.Title;
   articleTitle.setAttribute("class", "articleTitle");
   articleContainer.appendChild(articleTitle);
-  moviesArray.forEach((movie) => displayMovies(movie));
+  document.querySelector(".movieSection").appendChild(articleContainer);
 }
 
-displayMovies();
+// console.log("zana");
