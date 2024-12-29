@@ -56,7 +56,7 @@ movieContainer.appendChild(movieSection);
 // Fetch API --------------------------------------------------------
 const fetchApiResults = async (type = "batmanPageOne") => {
   try {
-    // console.log(type, "is responsive");
+    console.log(type, "is responsive");
     movieSection.replaceChildren();
     let url;
     switch (type) {
@@ -88,17 +88,17 @@ const fetchApiResults = async (type = "batmanPageOne") => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    // console.log(data);
+    console.log(data);
 
     // console.log(Array.isArray(data.Search));
 
-    if (Array.isArray(data.Search)) {
-      data.Search.forEach((item, index) => {
-        if (item.Title) {
-          // console.log(`Item ${index}: ${item.Title}`);
-        }
-      });
-    }
+    // if (Array.isArray(data.Search)) {
+    //   data.Search.forEach((item, index) => {
+    //     if (item.Title) {
+    //       // console.log(`Item ${index}: ${item.Title}`);
+    //     }
+    //   });
+    // }
     let moviesArray = data.Search;
     moviesArray.forEach(displayMovies);
     // console.log(moviesArray);
@@ -139,7 +139,6 @@ spidermanButton.addEventListener("click", async function () {
 });
 
 // Tryouts
-// console.log(moviesArray);
 // Display Movies ---------------------------------------------------
 function displayMovies(movie) {
   let articleContainer = document.createElement("article");
@@ -152,7 +151,30 @@ function displayMovies(movie) {
   articleTitle.textContent = movie.Title;
   articleTitle.setAttribute("class", "articleTitle");
   articleContainer.appendChild(articleTitle);
-  document.querySelector(".movieSection").appendChild(articleContainer);
+
+  let articleType = document.createElement("p");
+  articleType.textContent = movie.Type;
+  articleType.setAttribute("class", "articleType");
+  articleContainer.appendChild(articleType);
+
+  let articleYear = document.createElement("p");
+  articleYear.textContent = movie.Year;
+  articleYear.setAttribute("class", "articleYear");
+  articleContainer.appendChild(articleYear);
+
+  // let articleImdbID = document.createElement("p");
+  // articleImdbID.textContent = movie.imdbID;
+  // articleImdbID.setAttribute("class", "articleImdbID");
+  // articleContainer.appendChild(articleImdbID);
+
+  let articlePoster = document.createElement("img");
+  articlePoster.setAttribute("class", "articlePoster");
+
+  movie.Poster =
+    movie.Poster === null ? "https://placehold.co/600x400" : movie.Poster;
+  articlePoster.src = movie.Poster;
+  articleContainer.append(articlePoster);
+  //
 }
 
 // console.log("zana");
