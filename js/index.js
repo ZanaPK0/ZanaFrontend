@@ -59,11 +59,12 @@ movieContainer.appendChild(moviesContainer);
 const modal = document.getElementById("modal");
 movieContainer.appendChild(modal);
 
-const modalData = document.getElementById("modal-data");
+const modalData = document.getElementById("modalData");
 movieContainer.appendChild(modalData);
 
-const closeModal = document.getElementById("close-modal");
+const closeModal = document.getElementById("closeModal");
 movieContainer.appendChild(closeModal);
+closeModal.classList.add("hidden");
 
 // MODAL / CARD DOM -------------------------------------------------
 
@@ -89,21 +90,29 @@ function createMovieCards(movies) {
 // Visa modal med filmdata
 function showModal(movie) {
   modalData.innerHTML = `
-  <img src="${movie.Poster}" alt="${movie.Title}">
-  <h2>${movie.Title}</h2>
-  <p>Utgivningsdatum: ${movie.Year}</p>
-  <p>${movie.imdbID}</p>
-`;
-  modal.classList.remove("hidden");
+    <img src="${movie.Poster}" alt="${movie.Title}">
+    <h2>${movie.Title}</h2>
+    <p>Utgivningsdatum: ${movie.Year}</p>
+    <p>${movie.imdbID}</p>
+  `;
+  modalData.classList.remove("hidden");
+  closeModal.classList.remove("hidden");
 }
+
 // Dölj modal
 function hideModal() {
-  modal.classList.add("hidden");
+  modalData.classList.add("hidden");
+  closeModal.classList.add("hidden");
 }
-// Event Listeners
+
+// Event Listeners for closing modal
 closeModal.addEventListener("click", hideModal);
+
+// Hide modal when clicking outside the modal content area
 modal.addEventListener("click", (event) => {
-  if (event.target === modal) hideModal();
+  if (event.target === modal) {
+    hideModal();
+  }
 });
 
 // Initiera filmer
@@ -123,8 +132,8 @@ async function init(type = "batmanPageOne") {
 const fetchApiResults = async (type = "batmanPageOne") => {
   try {
     console.log(type, "is responsive");
-
-    movieSection.replaceChildren();
+    // movieContainer.replaceChildren();
+    moviesContainer.replaceChildren();
     let url;
     switch (type) {
       case "batmanPageOne":
