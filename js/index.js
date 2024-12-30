@@ -108,13 +108,6 @@ function hideModal() {
 // Event Listeners for closing modal
 closeModal.addEventListener("click", hideModal);
 
-// Hide modal when clicking outside the modal content area
-modal.addEventListener("click", (event) => {
-  if (event.target === modal) {
-    hideModal();
-  }
-});
-
 // Initiera filmer
 async function init(type = "batmanPageOne") {
   try {
