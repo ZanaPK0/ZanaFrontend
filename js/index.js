@@ -53,8 +53,8 @@ let movieSection = document.createElement("section");
 movieSection.setAttribute("class", "movieSection");
 movieContainer.appendChild(movieSection);
 
-const moviesContainer = document.getElementById("posterMovies-container");
-movieContainer.appendChild(moviesContainer);
+const posterMoviesContainer = document.getElementById("posterMovies-container");
+movieContainer.appendChild(posterMoviesContainer);
 
 const modal = document.getElementById("modal");
 movieContainer.appendChild(modal);
@@ -83,7 +83,7 @@ function createMovieCards(movies) {
     <h3>${movie.Title}</h3>
   `;
     movieCard.addEventListener("click", () => showModal(movie));
-    moviesContainer.appendChild(movieCard);
+    posterMoviesContainer.appendChild(movieCard);
   });
 }
 
@@ -132,8 +132,7 @@ async function init(type = "batmanPageOne") {
 const fetchApiResults = async (type = "batmanPageOne") => {
   try {
     console.log(type, "is responsive");
-    // movieContainer.replaceChildren();
-    moviesContainer.replaceChildren();
+    posterMoviesContainer.replaceChildren();
     let url;
     switch (type) {
       case "batmanPageOne":
