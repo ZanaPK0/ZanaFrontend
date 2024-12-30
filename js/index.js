@@ -53,6 +53,10 @@ let movieSection = document.createElement("section");
 movieSection.setAttribute("class", "movieSection");
 movieContainer.appendChild(movieSection);
 
+let errorContainer = document.createElement("div");
+errorContainer.setAttribute("id", "errorContainer");
+movieContainer.appendChild(errorContainer);
+
 // Fetch API --------------------------------------------------------
 const fetchApiResults = async (type = "batmanPageOne") => {
   try {
@@ -76,7 +80,7 @@ const fetchApiResults = async (type = "batmanPageOne") => {
         url = "http://www.omdbapi.com/?apikey=51a96b3d&s=Avengers&page=1";
         break;
       case "spidermanPageOne":
-        url = "http://www.omdbapi.com/?apikey=51a96b3d&s=Spiderman&page=1";
+        url = "http://www.omdbapi.com/?apikey=51a96b3&s=Spiderman&page=1";
         break;
 
       default:
@@ -103,6 +107,7 @@ const fetchApiResults = async (type = "batmanPageOne") => {
     moviesArray.forEach(displayMovies);
     // console.log(moviesArray);
   } catch (error) {
+    showError("An error occured: ", error.message);
     console.error(`Error fetching data for type "${type}:`, error.message);
     throw error;
   }
@@ -156,3 +161,55 @@ function displayMovies(movie) {
 }
 
 // console.log("zana");
+
+// Error Handling ---------------------------------------------------
+function responseMessage(response) {
+  switch (response.status) {
+    case 400:
+      throw new Error(
+        "400: Bad Request: Your request could not be processed. Please check that all information is correct and try again."
+      );
+    case 401:
+      throw new Error(
+        "401: Unauthorized: You do not have the proper authorization to access this content."
+      );
+    case 403:
+      throw new Error(
+        "403: Forbidden access: You are not authorized to view this page. Contact the administrator if you believe this is a mistake."
+      );
+    case 404:
+      throw new Error(
+        "404: Resource not found: The page you were looking for could not be found. Check the address or use the search function."
+      );
+    case 429:
+      throw new Error(
+        "429: Too Many Requests: You have made too many requests in a short period. Please wait a moment and try again."
+      );
+    case 500:
+      throw new Error(
+        "500: Internal Server Error: Oops! An error occurred on the server. We're working to resolve the issue. Please try again later."
+      );
+    default:
+      throw new Error(`"HTTP error! Status: ${response.status}`);
+  }
+}
+// Error visibility ------------------------------------------------
+// spread operator which makes it possible to accept any number of arguments and collects them into an array.
+function showError(...messages) {
+  // Get the error container
+  const errorContainer = document.getElementById("errorContainer");
+
+  // concatenates all elements of the array into a single string.
+  const fullMessage = messages.join("");
+  // Set the error message
+  errorContainer.textContent = fullMessage;
+
+  // Show the container
+  errorContainer.style.display = "block";
+
+  // hides the error after a few seconds
+  setTimeout(() => {
+    errorContainer.style.display = "none";
+    errorContainer.textContent = ""; // Clears the error message
+  }, 5000); // 5 seconds
+}
