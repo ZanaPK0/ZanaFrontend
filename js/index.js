@@ -53,10 +53,77 @@ let movieSection = document.createElement("section");
 movieSection.setAttribute("class", "movieSection");
 movieContainer.appendChild(movieSection);
 
+const moviesContainer = document.getElementById("posterMovies-container");
+movieContainer.appendChild(moviesContainer);
+
+const modal = document.getElementById("modal");
+movieContainer.appendChild(modal);
+
+const modalData = document.getElementById("modal-data");
+movieContainer.appendChild(modalData);
+
+const closeModal = document.getElementById("close-modal");
+movieContainer.appendChild(closeModal);
+
+// MODAL / CARD DOM -------------------------------------------------
+
 // Fetch API --------------------------------------------------------
+// document.addEventListener("DOMContentLoaded", () => {
+
+// Skapa filmkort
+function createMovieCards(movies) {
+  console.log(movies);
+
+  movies.forEach((movie) => {
+    const movieCard = document.createElement("div");
+    movieCard.classList.add("movie-card");
+    movieCard.innerHTML = `
+    <img src="${movie.Poster}" alt="${movie.Title}">
+    <h3>${movie.Title}</h3>
+  `;
+    movieCard.addEventListener("click", () => showModal(movie));
+    moviesContainer.appendChild(movieCard);
+  });
+}
+
+// Visa modal med filmdata
+function showModal(movie) {
+  modalData.innerHTML = `
+  <img src="${movie.Poster}" alt="${movie.Title}">
+  <h2>${movie.Title}</h2>
+  <p>Utgivningsdatum: ${movie.Year}</p>
+  <p>${movie.imdbID}</p>
+`;
+  modal.classList.remove("hidden");
+}
+// Dölj modal
+function hideModal() {
+  modal.classList.add("hidden");
+}
+// Event Listeners
+closeModal.addEventListener("click", hideModal);
+modal.addEventListener("click", (event) => {
+  if (event.target === modal) hideModal();
+});
+
+// Initiera filmer
+async function init(type = "batmanPageOne") {
+  try {
+    const movies = await fetchApiResults(type);
+    if (movies && Array.isArray(movies)) {
+      createMovieCards(movies);
+    } else {
+      console.error("no movies found");
+    }
+  } catch (error) {
+    console.error("Error initializing movies:", error);
+  }
+}
+
 const fetchApiResults = async (type = "batmanPageOne") => {
   try {
     console.log(type, "is responsive");
+
     movieSection.replaceChildren();
     let url;
     switch (type) {
@@ -92,16 +159,11 @@ const fetchApiResults = async (type = "batmanPageOne") => {
 
     // console.log(Array.isArray(data.Search));
 
-    // if (Array.isArray(data.Search)) {
-    //   data.Search.forEach((item, index) => {
-    //     if (item.Title) {
-    //       // console.log(`Item ${index}: ${item.Title}`);
-    //     }
-    //   });
-    // }
-    let moviesArray = data.Search;
-    moviesArray.forEach(displayMovies);
-    // console.log(moviesArray);
+    let movies = data.Search;
+    movies.forEach(displayMovies);
+    console.log(movies);
+
+    return movies;
   } catch (error) {
     console.error(`Error fetching data for type "${type}:`, error.message);
     throw error;
@@ -109,33 +171,33 @@ const fetchApiResults = async (type = "batmanPageOne") => {
 };
 
 window.addEventListener("DOMContentLoaded", async function () {
-  await fetchApiResults("batmanPageOne");
+  // await fetchApiResults("batmanPageOne");
 });
 
 // Categories -------------------------------------------------------
 
 batmanButton.addEventListener("click", async function () {
-  await fetchApiResults("batmanPageOne");
+  await init("batmanPageOne");
 });
 
 theflashButton.addEventListener("click", async function () {
-  await fetchApiResults("theflashPageOne");
+  await init("theflashPageOne");
 });
 
 thepunisherButton.addEventListener("click", async function () {
-  await fetchApiResults("thepunisherPageOne");
+  await init("thepunisherPageOne");
 });
 
 supermanButton.addEventListener("click", async function () {
-  await fetchApiResults("supermanPageOne");
+  await init("supermanPageOne");
 });
 
 avengersButton.addEventListener("click", async function () {
-  await fetchApiResults("avengersPageOne");
+  await init("avengersPageOne");
 });
 
 spidermanButton.addEventListener("click", async function () {
-  await fetchApiResults("spidermanPageOne");
+  await init("spidermanPageOne");
 });
 
 // Tryouts
@@ -144,37 +206,39 @@ function displayMovies(movie) {
   let articleContainer = document.createElement("article");
   // console.log(movie);
 
-  articleContainer.setAttribute("class", "articleContainer");
-  movieSection.appendChild(articleContainer);
+  // articleContainer.setAttribute("class", "articleContainer");
+  // movieSection.appendChild(articleContainer);
 
   let articleTitle = document.createElement("h3");
   articleTitle.textContent = movie.Title;
   articleTitle.setAttribute("class", "articleTitle");
   articleContainer.appendChild(articleTitle);
 
-  let articleType = document.createElement("p");
-  articleType.textContent = movie.Type;
-  articleType.setAttribute("class", "articleType");
-  articleContainer.appendChild(articleType);
+  //   let articleType = document.createElement("p");
+  //   articleType.textContent = movie.Type;
+  //   articleType.setAttribute("class", "articleType");
+  //   articleContainer.appendChild(articleType);
 
-  let articleYear = document.createElement("p");
-  articleYear.textContent = movie.Year;
-  articleYear.setAttribute("class", "articleYear");
-  articleContainer.appendChild(articleYear);
+  //   let articleYear = document.createElement("p");
+  //   articleYear.textContent = movie.Year;
+  //   articleYear.setAttribute("class", "articleYear");
+  //   articleContainer.appendChild(articleYear);
 
-  // let articleImdbID = document.createElement("p");
-  // articleImdbID.textContent = movie.imdbID;
-  // articleImdbID.setAttribute("class", "articleImdbID");
-  // articleContainer.appendChild(articleImdbID);
+  //   // let articleImdbID = document.createElement("p");
+  //   // articleImdbID.textContent = movie.imdbID;
+  //   // articleImdbID.setAttribute("class", "articleImdbID");
+  //   // articleContainer.appendChild(articleImdbID);
 
-  let articlePoster = document.createElement("img");
-  articlePoster.setAttribute("class", "articlePoster");
+  //   let articlePoster = document.createElement("img");
+  //   articlePoster.setAttribute("class", "articlePoster");
 
-  movie.Poster =
-    movie.Poster === null ? "https://placehold.co/600x400" : movie.Poster;
-  articlePoster.src = movie.Poster;
-  articleContainer.append(articlePoster);
-  //
+  //   movie.Poster =
+  //     movie.Poster === null ? "https://placehold.co/600x400" : movie.Poster;
+  //   articlePoster.src = movie.Poster;
+  //   articleContainer.append(articlePoster);
+  //   //
 }
 
 // console.log("zana");
+
+// Modal creation ---------------------------------------------
