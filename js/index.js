@@ -1,7 +1,5 @@
 // Global Variables
 
-let moviesArray = [];
-
 //Header creation ---------------------------------------------------
 
 let headerContainer = document.createElement("header");
@@ -49,10 +47,6 @@ let movieContainer = document.createElement("main");
 movieContainer.setAttribute("class", "movieContainer");
 document.body.appendChild(movieContainer);
 
-let movieSection = document.createElement("section");
-movieSection.setAttribute("class", "movieSection");
-movieContainer.appendChild(movieSection);
-
 const posterMoviesContainer = document.getElementById("posterMovies-container");
 movieContainer.appendChild(posterMoviesContainer);
 
@@ -66,10 +60,7 @@ const closeModal = document.getElementById("closeModal");
 movieContainer.appendChild(closeModal);
 closeModal.classList.add("hidden");
 
-// MODAL / CARD DOM -------------------------------------------------
-
 // Fetch API --------------------------------------------------------
-// document.addEventListener("DOMContentLoaded", () => {
 
 // Skapa filmkort
 function createMovieCards(movies) {
@@ -78,8 +69,10 @@ function createMovieCards(movies) {
   movies.forEach((movie) => {
     const movieCard = document.createElement("div");
     movieCard.classList.add("movie-card");
+    const poster =
+      movie.Poster !== "N/A" ? movie.Poster : "https://placehold.co/600x400";
     movieCard.innerHTML = `
-    <img src="${movie.Poster}" alt="${movie.Title}">
+    <img src="${poster}" alt="${movie.Title}">
     <h3>${movie.Title}</h3>
   `;
     movieCard.addEventListener("click", () => showModal(movie));
@@ -89,8 +82,10 @@ function createMovieCards(movies) {
 
 // Visa modal med filmdata
 function showModal(movie) {
+  const poster =
+    movie.Poster !== "N/A" ? movie.Poster : "https://placehold.co/600x400";
   modalData.innerHTML = `
-    <img src="${movie.Poster}" alt="${movie.Title}">
+    <img src="${poster}" alt="${movie.Title}">
     <h2>${movie.Title}</h2>
     <p>Utgivningsdatum: ${movie.Year}</p>
     <p>${movie.imdbID}</p>
@@ -172,7 +167,7 @@ const fetchApiResults = async (type = "batmanPageOne") => {
 };
 
 window.addEventListener("DOMContentLoaded", async function () {
-  // await fetchApiResults("batmanPageOne");
+  await init("batmanPageOne");
 });
 
 // Categories -------------------------------------------------------
@@ -214,32 +209,4 @@ function displayMovies(movie) {
   articleTitle.textContent = movie.Title;
   articleTitle.setAttribute("class", "articleTitle");
   articleContainer.appendChild(articleTitle);
-
-  //   let articleType = document.createElement("p");
-  //   articleType.textContent = movie.Type;
-  //   articleType.setAttribute("class", "articleType");
-  //   articleContainer.appendChild(articleType);
-
-  //   let articleYear = document.createElement("p");
-  //   articleYear.textContent = movie.Year;
-  //   articleYear.setAttribute("class", "articleYear");
-  //   articleContainer.appendChild(articleYear);
-
-  //   // let articleImdbID = document.createElement("p");
-  //   // articleImdbID.textContent = movie.imdbID;
-  //   // articleImdbID.setAttribute("class", "articleImdbID");
-  //   // articleContainer.appendChild(articleImdbID);
-
-  //   let articlePoster = document.createElement("img");
-  //   articlePoster.setAttribute("class", "articlePoster");
-
-  //   movie.Poster =
-  //     movie.Poster === null ? "https://placehold.co/600x400" : movie.Poster;
-  //   articlePoster.src = movie.Poster;
-  //   articleContainer.append(articlePoster);
-  //   //
 }
-
-// console.log("zana");
-
-// Modal creation ---------------------------------------------
