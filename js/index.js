@@ -1,7 +1,5 @@
 // Global Variables
 
-let moviesArray = [];
-
 //Header creation ---------------------------------------------------
 
 let headerContainer = document.createElement("header");
@@ -49,19 +47,84 @@ let movieContainer = document.createElement("main");
 movieContainer.setAttribute("class", "movieContainer");
 document.body.appendChild(movieContainer);
 
-let movieSection = document.createElement("section");
-movieSection.setAttribute("class", "movieSection");
-movieContainer.appendChild(movieSection);
+const posterMoviesContainer = document.getElementById("posterMovies-container");
+movieContainer.appendChild(posterMoviesContainer);
+
+const modal = document.getElementById("modal");
+movieContainer.appendChild(modal);
+
+const modalData = document.getElementById("modalData");
+movieContainer.appendChild(modalData);
+
+const closeModal = document.getElementById("closeModal");
+movieContainer.appendChild(closeModal);
+closeModal.classList.add("hidden");
 
 let errorContainer = document.createElement("div");
 errorContainer.setAttribute("id", "errorContainer");
 movieContainer.appendChild(errorContainer);
 
 // Fetch API --------------------------------------------------------
+
+// Skapa filmkort
+function createMovieCards(movies) {
+  console.log(movies);
+
+  movies.forEach((movie) => {
+    const movieCard = document.createElement("div");
+    movieCard.classList.add("movie-card");
+    const poster =
+      movie.Poster !== "N/A" ? movie.Poster : "https://placehold.co/600x400";
+    movieCard.innerHTML = `
+    <img src="${poster}" alt="${movie.Title}">
+    <h3>${movie.Title}</h3>
+  `;
+    movieCard.addEventListener("click", () => showModal(movie));
+    posterMoviesContainer.appendChild(movieCard);
+  });
+}
+
+// Visa modal med filmdata
+function showModal(movie) {
+  const poster =
+    movie.Poster !== "N/A" ? movie.Poster : "https://placehold.co/600x400";
+  modalData.innerHTML = `
+    <img src="${poster}" alt="${movie.Title}">
+    <h2>${movie.Title}</h2>
+    <p>Utgivningsdatum: ${movie.Year}</p>
+    <p>${movie.imdbID}</p>
+  `;
+  modalData.classList.remove("hidden");
+  closeModal.classList.remove("hidden");
+}
+
+// Dölj modal
+function hideModal() {
+  modalData.classList.add("hidden");
+  closeModal.classList.add("hidden");
+}
+
+// Event Listeners for closing modal
+closeModal.addEventListener("click", hideModal);
+
+// Initiera filmer
+async function init(type = "batmanPageOne") {
+  try {
+    const movies = await fetchApiResults(type);
+    if (movies && Array.isArray(movies)) {
+      createMovieCards(movies);
+    } else {
+      console.error("no movies found");
+    }
+  } catch (error) {
+    console.error("Error initializing movies:", error);
+  }
+}
+
 const fetchApiResults = async (type = "batmanPageOne") => {
   try {
-    // console.log(type, "is responsive");
-    movieSection.replaceChildren();
+    console.log(type, "is responsive");
+    posterMoviesContainer.replaceChildren();
     let url;
     switch (type) {
       case "batmanPageOne":
@@ -92,20 +155,15 @@ const fetchApiResults = async (type = "batmanPageOne") => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    // console.log(data);
+    console.log(data);
 
     // console.log(Array.isArray(data.Search));
 
-    if (Array.isArray(data.Search)) {
-      data.Search.forEach((item, index) => {
-        if (item.Title) {
-          // console.log(`Item ${index}: ${item.Title}`);
-        }
-      });
-    }
-    let moviesArray = data.Search;
-    moviesArray.forEach(displayMovies);
-    // console.log(moviesArray);
+    let movies = data.Search;
+    movies.forEach(displayMovies);
+    console.log(movies);
+
+    return movies;
   } catch (error) {
     showError("An error occured: ", error.message);
     console.error(`Error fetching data for type "${type}:`, error.message);
@@ -114,50 +172,48 @@ const fetchApiResults = async (type = "batmanPageOne") => {
 };
 
 window.addEventListener("DOMContentLoaded", async function () {
-  await fetchApiResults("batmanPageOne");
+  await init("batmanPageOne");
 });
 
 // Categories -------------------------------------------------------
 
 batmanButton.addEventListener("click", async function () {
-  await fetchApiResults("batmanPageOne");
+  await init("batmanPageOne");
 });
 
 theflashButton.addEventListener("click", async function () {
-  await fetchApiResults("theflashPageOne");
+  await init("theflashPageOne");
 });
 
 thepunisherButton.addEventListener("click", async function () {
-  await fetchApiResults("thepunisherPageOne");
+  await init("thepunisherPageOne");
 });
 
 supermanButton.addEventListener("click", async function () {
-  await fetchApiResults("supermanPageOne");
+  await init("supermanPageOne");
 });
 
 avengersButton.addEventListener("click", async function () {
-  await fetchApiResults("avengersPageOne");
+  await init("avengersPageOne");
 });
 
 spidermanButton.addEventListener("click", async function () {
-  await fetchApiResults("spidermanPageOne");
+  await init("spidermanPageOne");
 });
 
 // Tryouts
-// console.log(moviesArray);
 // Display Movies ---------------------------------------------------
 function displayMovies(movie) {
   let articleContainer = document.createElement("article");
   // console.log(movie);
 
-  articleContainer.setAttribute("class", "articleContainer");
-  movieSection.appendChild(articleContainer);
+  // articleContainer.setAttribute("class", "articleContainer");
+  // movieSection.appendChild(articleContainer);
 
   let articleTitle = document.createElement("h3");
   articleTitle.textContent = movie.Title;
   articleTitle.setAttribute("class", "articleTitle");
   articleContainer.appendChild(articleTitle);
-  document.querySelector(".movieSection").appendChild(articleContainer);
 }
 
 // console.log("zana");
