@@ -91,8 +91,8 @@ function showModal(movie) {
   modalData.innerHTML = `
     <img src="${poster}" alt="${movie.Title}">
     <h2>${movie.Title}</h2>
-    <p>Utgivningsdatum: ${movie.Year}</p>
-    <p>${movie.imdbID}</p>
+    <p>Release year: ${movie.Year}</p>
+    <p> imdb ID = ${movie.imdbID}</p>
   `;
   modalData.classList.remove("hidden");
   closeModal.classList.remove("hidden");
@@ -121,7 +121,7 @@ async function init(type = "batmanPageOne") {
   }
 }
 
-const fetchApiResults = async (type = "batmanPageOne") => {
+const fetchApiResults = async (type) => {
   try {
     console.log(type, "is responsive");
     posterMoviesContainer.replaceChildren();
@@ -152,7 +152,7 @@ const fetchApiResults = async (type = "batmanPageOne") => {
     }
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      responseMessage(response);
     }
     const data = await response.json();
     console.log(data);
