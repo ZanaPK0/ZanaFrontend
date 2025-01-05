@@ -108,10 +108,10 @@ function hideModal() {
 closeModal.addEventListener("click", hideModal);
 
 // Initiera filmer
-async function init(type = "batmanPageOne") {
+async function init(type) {
   try {
     const movies = await fetchApiResults(type);
-    if (movies && Array.isArray(movies)) {
+    if (movies.length > 0) {
       createMovieCards(movies);
     } else {
       console.error("no movies found");
@@ -206,9 +206,6 @@ spidermanButton.addEventListener("click", async function () {
 function displayMovies(movie) {
   let articleContainer = document.createElement("article");
   // console.log(movie);
-
-  // articleContainer.setAttribute("class", "articleContainer");
-  // movieSection.appendChild(articleContainer);
 
   let articleTitle = document.createElement("h3");
   articleTitle.textContent = movie.Title;
