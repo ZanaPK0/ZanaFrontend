@@ -66,8 +66,6 @@ movieContainer.appendChild(errorContainer);
 
 // create Movie CArds
 function createMovieCards(movies) {
-  console.log(movies);
-
   movies.forEach((movie) => {
     const movieCard = document.createElement("div");
     movieCard.classList.add("movie-card");
@@ -121,7 +119,6 @@ async function init(type) {
 
 const fetchApiResults = async (type) => {
   try {
-    console.log(type, "is responsive");
     posterMoviesContainer.replaceChildren();
     let url;
     switch (type) {
@@ -153,11 +150,8 @@ const fetchApiResults = async (type) => {
       responseMessage(response);
     }
     const data = await response.json();
-    console.log(data);
 
     let movies = data.Search;
-    movies.forEach(displayMovies);
-    console.log(movies);
 
     return movies;
   } catch (error) {
