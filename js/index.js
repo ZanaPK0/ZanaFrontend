@@ -1,5 +1,3 @@
-// Global Variables
-
 //Header creation ---------------------------------------------------
 
 let headerContainer = document.createElement("header");
@@ -66,7 +64,7 @@ movieContainer.appendChild(errorContainer);
 
 // Fetch API --------------------------------------------------------
 
-// Skapa filmkort
+// create Movie CArds
 function createMovieCards(movies) {
   console.log(movies);
 
@@ -84,7 +82,7 @@ function createMovieCards(movies) {
   });
 }
 
-// Visa modal med filmdata
+// Show Modal with more information
 function showModal(movie) {
   const poster =
     movie.Poster !== "N/A" ? movie.Poster : "https://placehold.co/600x400";
@@ -98,7 +96,7 @@ function showModal(movie) {
   closeModal.classList.remove("hidden");
 }
 
-// Dölj modal
+// Hide Modal
 function hideModal() {
   modalData.classList.add("hidden");
   closeModal.classList.add("hidden");
@@ -107,7 +105,7 @@ function hideModal() {
 // Event Listeners for closing modal
 closeModal.addEventListener("click", hideModal);
 
-// Initiera filmer
+// Initialize movies
 async function init(type) {
   try {
     const movies = await fetchApiResults(type);
@@ -157,8 +155,6 @@ const fetchApiResults = async (type) => {
     const data = await response.json();
     console.log(data);
 
-    // console.log(Array.isArray(data.Search));
-
     let movies = data.Search;
     movies.forEach(displayMovies);
     console.log(movies);
@@ -201,19 +197,15 @@ spidermanButton.addEventListener("click", async function () {
   await init("spidermanPageOne");
 });
 
-// Tryouts
 // Display Movies ---------------------------------------------------
 function displayMovies(movie) {
   let articleContainer = document.createElement("article");
-  // console.log(movie);
 
   let articleTitle = document.createElement("h3");
   articleTitle.textContent = movie.Title;
   articleTitle.setAttribute("class", "articleTitle");
   articleContainer.appendChild(articleTitle);
 }
-
-// console.log("zana");
 
 // Error Handling ---------------------------------------------------
 function responseMessage(response) {
